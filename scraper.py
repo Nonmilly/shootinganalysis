@@ -38,17 +38,39 @@ def full_path(path):
     return path if os.path.isabs(path) else os.path.join(HERE, path)
 
 
+# If a download fails, the reason is stored here so the web page can show
+# something more useful than "it didn't work".
+LAST_ERROR = ""
+
+
 def scrape_tables(url):
     """
     Read every table on a web page into a list of DataFrames.
     read_html() finds the <table> tags for us, so there is nothing to
     take apart by hand.
     """
+    global LAST_ERROR
     try:
+        LAST_ERROR = ""
         return pd.read_html(url, storage_options=BROWSER)
     except Exception as e:
-        # site blocked us, page has no tables, or no internet
-        print("could not scrape:", e)
+        msg = str(e)
+        # work out what actually went wrong so we can say so
+        if "No tables found" in msg:
+            LAST_ERROR = (
+                "that page has no HTML table in it. Sites like fifa.com and "
+                "ESPN build their tables with JavaScript after the page "
+                "loads, so there is nothing for pandas to read. Try a page "
+                "whose table is in the HTML, e.g. Wikipedia."
+            )
+        elif "403" in msg:
+            LAST_ERROR = ("the site blocked the request (403 Forbidden). "
+                          "FBRef does this to stop automated downloads.")
+        elif "404" in msg:
+            LAST_ERROR = "that page does not exist (404) - check the address."
+        else:
+            LAST_ERROR = msg
+        print("could not download:", LAST_ERROR)
         return []
 
 
@@ -94,11 +116,17 @@ def download_to_csv(url, table_index=0, out_csv=EXTRACT):
     Any existing extract is deleted first so nothing old is left behind.
     Returns the path it saved to, or None if the download failed.
     """
+    global LAST_ERROR
     print("downloading:", url)
     tables = scrape_tables(url)
 
     if len(tables) <= table_index:
-        print("no table", table_index, "on that page - nothing downloaded")
+        if tables:
+            # the page had tables, just not the one that was asked for
+            LAST_ERROR = ("that page only has {} tables (numbered 0 to {}), "
+                          "so table {} does not exist.").format(
+                              len(tables), len(tables) - 1, table_index)
+        print("nothing downloaded:", LAST_ERROR)
         return None
 
     df = clean(tables[table_index])
@@ -129,12 +157,14 @@ def get_data(source_config):
           "extract_csv": "data/fifawcextract.csv"
         }
     """
+    global LAST_ERROR
     url = source_config.get("url")
     idx = source_config.get("table_index", 0)
     out = source_config.get("extract_csv", EXTRACT)
 
     if not url:
-        print("no url given - nothing to download")
+        LAST_ERROR = "no website address was given, so there was nothing to download"
+        print(LAST_ERROR)
         return pd.DataFrame()
 
     path = download_to_csv(url, idx, out)

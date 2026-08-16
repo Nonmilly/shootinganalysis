@@ -293,16 +293,16 @@
     <!-- SCRAPER SECTION -->
     <div class="card">
       <h2><span class="step">1</span>Get the data</h2>
-      <p class="sub">Paste a stats page to scrape it live, or leave it blank to use the saved CSV.</p>
+      <p class="sub">Downloads the table and saves it to <code>data/fifawcextract.csv</code>, replacing whatever was in that file before. Leave the boxes as they are to use the page my analysis uses.</p>
 
       <div class="field-row">
         <div>
           <label for="url">Website URL</label>
-          <input type="text" id="url" placeholder="https://fbref.com/en/comps/1/stats/World-Cup-Stats">
+          <input type="text" id="url" value="https://en.wikipedia.org/wiki/2026_FIFA_World_Cup">
         </div>
         <div>
           <label for="idx">Table number (0 = first)</label>
-          <input type="text" id="idx" value="0">
+          <input type="text" id="idx" value="68">
         </div>
       </div>
 
@@ -310,7 +310,9 @@
         <button onclick="scrape()">Load data</button>
       </div>
 
-      <p class="note">Tries the live site first. If the site blocks us, it falls back to the saved CSV so nothing breaks.</p>
+      <p class="note">There is no backup file &mdash; if the download fails you get an error rather than old data.
+        The page must have a real HTML table in it: <b>fifa.com and ESPN build their tables with JavaScript</b>,
+        so there is nothing to read, and <b>FBRef blocks automated downloads</b> (403).</p>
       <div id="src" class="src"></div>
       <div id="tableArea"></div>
     </div>
