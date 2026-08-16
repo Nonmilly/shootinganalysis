@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WC2026 Data Analysis</title>
+
+  <!-- Quicksand from Google Fonts (needs internet the first time; falls back to a
+       normal rounded sans if you're offline) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --blue-900: #0a2a6b;
+      --blue-700: #1250c4;
+      --blue-500: #2f7ef0;
+      --blue-300: #7fb2f7;
+      --blue-050: #eef4ff;
+      --ink:      #16243d;
+      --muted:    #6b7a95;
+      --line:     #e2eaf6;
+      --white:    #ffffff;
+      --grad:     linear-gradient(135deg, #0a2a6b 0%, #1250c4 55%, #2f7ef0 100%);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Quicksand", "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--white);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---------- header: the blue gradient band with the FIFA logo ---------- */
+    header {
+      background: var(--grad);
+      color: var(--white);
+      padding: 34px 22px 40px;
+    }
+    .head-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .logo { height: 46px; width: auto; flex: none; }
+    header h1 {
+      margin: 0;
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+    header p {
+      margin: 3px 0 0;
+      font-size: .92rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.82);
+    }
+
+    /* ---------- layout ---------- */
+    .wrap {
+      max-width: 1040px;
+      margin: -22px auto 60px;   /* pulls the first card up over the gradient */
+      padding: 0 22px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 22px rgba(18, 80, 196, .07);
+    }
+
+    .step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--grad);
+      color: var(--white);
+      font-size: .82rem;
+      font-weight: 700;
+      margin-right: 9px;
+    }
+    h2 {
+      display: flex;
+      align-items: center;
+      font-size: 1.12rem;
+      font-weight: 700;
+      margin: 0 0 4px;
+      color: var(--blue-900);
+    }
+    .sub { margin: 0 0 18px; font-size: .87rem; color: var(--muted); }
+
+    /* ---------- form bits ---------- */
+    label {
+      display: block;
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--blue-900);
+      margin-bottom: 5px;
+    }
+    input[type=text] {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--blue-050);
+      font-family: inherit;
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 14px;
+      transition: border-color .15s, background .15s;
+    }
+    input[type=text]:focus {
+      outline: none;
+      border-color: var(--blue-500);
+      background: var(--white);
+    }
+    .field-row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .field-row > div:first-child { flex: 1 1 380px; }
+    .field-row > div:last-child  { flex: 0 1 190px; }
+
+    button {
+      font-family: inherit;
+      font-size: .88rem;
+      font-weight: 700;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 999px;
+      background: var(--grad);
+      color: var(--white);
+      cursor: pointer;
+      transition: transform .12s, box-shadow .15s, background .15s;
+    }
+    button:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(18,80,196,.28); }
+    button.ghost {
+      background: var(--white);
+      color: var(--blue-700);
+      border: 1px solid var(--blue-300);
+      box-shadow: none;
+    }
+    button.ghost:hover { background: var(--blue-050); box-shadow: 0 4px 12px rgba(18,80,196,.12); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .note { font-size: .8rem; color: var(--muted); margin-top: 12px; }
+    .src {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--blue-700);
+      margin-top: 14px;
+      min-height: 1.2em;
+    }
+
+    /* ---------- data table ---------- */
+    .scroll {
+      max-height: 430px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+    table { border-collapse: collapse; width: 100%; font-size: .82rem; }
+    th, td { padding: 8px 11px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    th {
+      background: var(--blue-050);
+      color: var(--blue-900);
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+    }
+    tbody tr:hover { background: #f7faff; }
+
+    /* ---------- results ---------- */
+    .result {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--blue-500);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-top: 16px;
+      background: var(--white);
+    }
+    .result h3 { margin: 0 0 4px; font-size: 1rem; font-weight: 700; color: var(--blue-900); }
+    .result .q { margin: 0 0 6px; font-size: .86rem; color: var(--muted); }
+    .result .var { font-size: .78rem; font-weight: 700; color: var(--blue-700); }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+      gap: 10px;
+      margin: 16px 0 6px;
+    }
+    .stat {
+      background: var(--blue-050);
+      border-radius: 10px;
+      padding: 10px 12px;
+      text-align: center;
+    }
+    .stat .k { display: block; font-size: .68rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    .stat .v { display: block; font-size: 1.08rem; font-weight: 700; color: var(--blue-900); }
+
+    .block-title {
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--muted);
+      margin: 16px 0 6px;
+    }
+    .line { font-size: .88rem; margin: 3px 0; }
+    .line b { color: var(--blue-900); }
+
+    .box {
+      background: var(--blue-050);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin: 6px 0;
+      font-size: .86rem;
+    }
+    .box .h { font-weight: 700; color: var(--blue-900); }
+    .conclusion {
+      background: var(--blue-050);
+      border-left: 3px solid var(--blue-500);
+      border-radius: 0 10px 10px 0;
+      padding: 12px 16px;
+      margin-top: 8px;
+      font-size: .88rem;
+    }
+    .pill {
+      display: inline-block;
+      font-size: .74rem;
+      font-weight: 700;
+      padding: 3px 11px;
+      border-radius: 999px;
+      margin-left: 6px;
+    }
+    .pill.yes { background: #e6f6ec; color: #17703c; }
+    .pill.no  { background: var(--blue-050); color: var(--muted); }
+
+    details { margin-top: 14px; }
+    summary {
+      cursor: pointer;
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--blue-700);
+    }
+    pre {
+      background: var(--blue-050);
+      color: var(--ink);
+      padding: 14px;
+      border-radius: 10px;
+      overflow: auto;
+      font-size: .78rem;
+      margin-top: 8px;
+    }
+    .placeholder { font-size: .87rem; color: var(--muted); margin-top: 14px; }
+
+    footer {
+      text-align: center;
+      font-size: .78rem;
+      color: var(--muted);
+      padding-bottom: 34px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="head-inner">
+      <img class="logo" alt="FIFA"
+           src="https://digitalhub.fifa.com/transform/befe3a64-328b-453c-8b58-0faeb9103684/FIFA_Logo_White_Generic?&io=transform:fill&quality=75">
+      <div>
+        <h1>World Cup 2026 — Shooting Efficiency</h1>
+        <p>PRT581 Group Project · Task 3 · Mildred</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- SCRAPER SECTION -->
+    <div class="card">
+      <h2><span class="step">1</span>Get the data</h2>
+      <p class="sub">Paste a stats page to scrape it live, or leave it blank to use the saved CSV.</p>
+
+      <div class="field-row">
+        <div>
+          <label for="url">Website URL</label>
+          <input type="text" id="url" placeholder="https://fbref.com/en/comps/1/stats/World-Cup-Stats">
+        </div>
+        <div>
+          <label for="idx">Table number (0 = first)</label>
+          <input type="text" id="idx" value="0">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button onclick="scrape()">Load data</button>
+      </div>
+
+      <p class="note">Tries the live site first. If the site blocks us, it falls back to the saved CSV so nothing breaks.</p>
+      <div id="src" class="src"></div>
+      <div id="tableArea"></div>
+    </div>
+
+    <!-- ANALYSIS SECTION -->
+    <div class="card">
+      <h2><span class="step">2</span>Run the analysis</h2>
+      <p class="sub">Does the wrangling and sampling, then the descriptive statistics, a 95% confidence interval and a two-sample t-test.</p>
+
+      <div class="btn-row">
+        <button onclick="task()">Run Task 3 · Shooting efficiency</button>
+      </div>
+
+      <div id="results"><p class="placeholder">Results will show up here.</p></div>
+    </div>
+
+  </div>
+
+  <footer>FIFA World Cup 2026 · shooting efficiency analysis</footer>
+
+<script>
+// ---------- scraping ----------
+
+// grab data off a site (or the fallback csv) and draw it as a table
+async function scrape() {
+  const url  = document.getElementById('url').value.trim();
+  const idx  = document.getElementById('idx').value.trim() || '0';
+  const src  = document.getElementById('src');
+  const area = document.getElementById('tableArea');
+  src.textContent = 'Loading...';
+  area.innerHTML = '';
+
+  let endpoint = '/api/scrape?table_index=' + idx;
+  if (url) endpoint += '&url=' + encodeURIComponent(url);
+
+  try {
+    const res = await fetch(endpoint);
+    const d = await res.json();
+    if (d.error) { src.textContent = 'Error: ' + d.error; return; }
+
+    src.textContent = 'Source: ' + d.source + '  ·  ' + d.rows + ' rows';
+    area.innerHTML = buildTable(d.columns, d.data);
+  } catch (e) {
+    src.textContent = 'Something went wrong: ' + e;
+  }
+}
+
+// build an html table from columns + row objects
+function buildTable(cols, rows) {
+  let h = '<div class="scroll"><table><thead><tr>';
+  cols.forEach(c => h += '<th>' + esc(c) + '</th>');
+  h += '</tr></thead><tbody>';
+  rows.forEach(r => {
+    h += '<tr>';
+    cols.forEach(c => h += '<td>' + esc(r[c] ?? '') + '</td>');
+    h += '</tr>';
+  });
+  h += '</tbody></table></div>';
+  return h;
+}
+
+// ---------- running the analysis ----------
+
+async function task() {
+  const out = document.getElementById('results');
+  out.innerHTML = '<p class="placeholder">Running...</p>';
+
+  try {
+    const res = await fetch('/api/task');
+    const d = await res.json();
+    out.innerHTML = card(d);
+  } catch (e) {
+    out.innerHTML = '<p class="placeholder">Error: ' + esc(e) + '</p>';
+  }
+}
+
+// draw the result as a card
+function card(r) {
+  if (r.error) return '<div class="result"><h3>Error</h3><p class="q">' + esc(r.error) + '</p></div>';
+
+  const d  = r.descriptive || {};
+  const ci = r.confidence_interval || {};
+  const t  = r.ttest || {};
+  const h  = r.hypotheses || {};
+  const sm = r.sampling || {};
+  const w  = r.wrangling || {};
+  const c  = r.conditions || {};
+
+  // central tendency + dispersion, the two aspects from the notes
+  const stats = [
+    ['n', d.n], ['mean', d.mean], ['median', d.median], ['std', d.std],
+    ['variance', d.variance], ['range', d.range], ['IQR', d.iqr],
+    ['min', d.min], ['max', d.max]
+  ].map(([k, v]) =>
+    '<div class="stat"><span class="k">' + k + '</span><span class="v">' + esc(v ?? '-') + '</span></div>'
+  ).join('');
+
+  const sig = t.reject_null
+    ? '<span class="pill yes">reject H0</span>'
+    : '<span class="pill no">do not reject H0</span>';
+
+  return '<div class="result">' +
+    '<h3>' + esc(r.title) + '</h3>' +
+    '<p class="q">' + esc(r.question) + '</p>' +
+    '<span class="var">' + esc(r.variable) + ' &middot; ' + esc(r.measurement_level) + '</span>' +
+
+    '<div class="block-title">Step 2 &middot; Plan &mdash; the hypotheses</div>' +
+    '<div class="box"><span class="h">H<sub>0</sub>:</span> ' + esc(h.H0) + '<br>' +
+      '<span class="h">H<sub>a</sub>:</span> ' + esc(h.Ha) + '<br>' +
+      '<span class="h">Test:</span> ' + esc(h.test) + ' (' + esc(h.tail) +
+      '), &alpha; = ' + esc(h.alpha) + '</div>' +
+
+    '<div class="block-title">Data wrangling &amp; sampling</div>' +
+    '<p class="line">Missing values handled by <b>' + esc(w.missing_data_method) +
+      '</b> &mdash; ' + esc(w.rows_dropped) + ' rows dropped.</p>' +
+    '<p class="line">Population <b>' + esc(sm.population) + '</b> teams &rarr; sample <b>' +
+      esc(sm.sample) + '</b> by ' + esc(sm.method) + ' (' + esc(sm.why_30) + ').</p>' +
+
+    '<div class="block-title">Conditions for inference</div>' +
+    '<p class="line">Simple random sample: <b>yes</b>. Skewness <b>' + esc(c.skewness) +
+      '</b> &rarr; ' + (c.roughly_normal ? 'roughly normal' : 'not clearly normal, p-value is approximate') + '.</p>' +
+
+    '<div class="block-title">Descriptive statistics</div>' +
+    '<div class="stat-grid">' + stats + '</div>' +
+
+    '<div class="block-title">95% confidence interval for the population mean</div>' +
+    '<p class="line">standard error = <b>' + esc(ci.standard_error) + '</b>, ' +
+      esc(ci.statistic_used) + ' = <b>' + esc(ci.critical_value) + '</b>, ' +
+      'margin of error = <b>' + esc(ci.margin_of_error) + '</b></p>' +
+    '<p class="line">CI = <b>' + esc(ci.lower) + '</b> to <b>' + esc(ci.upper) + '</b>' +
+      ' &nbsp;(mean ' + esc(ci.mean) + ')</p>' +
+
+    '<div class="block-title">Two-sample t-test</div>' +
+    '<p class="line">' + esc(t.group_a) + ': mean <b>' + esc(t.mean_a) + '</b>, s ' + esc(t.std_a) +
+      ', n ' + esc(t.n_a) + '</p>' +
+    '<p class="line">' + esc(t.group_b) + ': mean <b>' + esc(t.mean_b) + '</b>, s ' + esc(t.std_b) +
+      ', n ' + esc(t.n_b) + '</p>' +
+    '<p class="line">t = <b>' + esc(t.t_stat) + '</b>, p = <b>' +
+      esc(t.p_value_text ?? t.p_value) + '</b>, df = ' + esc(t.df_conservative) + sig + '</p>' +
+
+    '<div class="block-title">Step 4 &middot; Conclude</div>' +
+    '<div class="conclusion">' + esc(r.estimate) + '<br><br>' + esc(r.conclusion) + '</div>' +
+
+    '<details><summary>Raw JSON</summary><pre>' + esc(JSON.stringify(r, null, 2)) + '</pre></details>' +
+  '</div>';
+}
+
+// keep any stray < > & in the data from breaking the html
+function esc(v) {
+  return String(v)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+</script>
+</body>
+</html>

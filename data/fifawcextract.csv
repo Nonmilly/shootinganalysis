@@ -1,0 +1,49 @@
+Pos,Grp,Team,Pld,W,D,L,GF,GA,GD,Pts,Final result
+1.0,H,Spain,8.0,7.0,1.0,0.0,14.0,1.0,13,22.0,Champion
+2.0,J,Argentina,8.0,7.0,0.0,1.0,19.0,8.0,11,21.0,Runner-up
+3.0,L,England,8.0,6.0,1.0,1.0,20.0,12.0,8,19.0,Third place
+4.0,I,France,8.0,6.0,0.0,2.0,20.0,10.0,10,18.0,Fourth place
+5.0,I,Norway,6.0,4.0,0.0,2.0,13.0,11.0,2,12.0,Eliminated in quarterfinals
+6.0,G,Belgium,6.0,3.0,2.0,1.0,14.0,7.0,7,11.0,Eliminated in quarterfinals
+7.0,C,Morocco,6.0,3.0,2.0,1.0,10.0,6.0,4,11.0,Eliminated in quarterfinals
+7.0,B,Switzerland,6.0,3.0,2.0,1.0,10.0,6.0,4,11.0,Eliminated in quarterfinals
+9.0,A,Mexico (H),5.0,4.0,0.0,1.0,10.0,3.0,7,12.0,Eliminated in round of 16
+10.0,K,Colombia,5.0,3.0,2.0,0.0,5.0,1.0,4,11.0,Eliminated in round of 16
+11.0,C,Brazil,5.0,3.0,1.0,1.0,10.0,4.0,6,10.0,Eliminated in round of 16
+12.0,D,United States (H),5.0,3.0,0.0,2.0,11.0,8.0,3,9.0,Eliminated in round of 16
+13.0,K,Portugal,5.0,2.0,2.0,1.0,8.0,3.0,5,8.0,Eliminated in round of 16
+14.0,B,Canada (H),5.0,2.0,1.0,2.0,9.0,6.0,3,7.0,Eliminated in round of 16
+15.0,G,Egypt,5.0,1.0,3.0,1.0,8.0,7.0,1,6.0,Eliminated in round of 16
+16.0,D,Paraguay,5.0,1.0,2.0,2.0,3.0,6.0,-3,5.0,Eliminated in round of 16
+17.0,F,Netherlands,4.0,2.0,2.0,0.0,11.0,5.0,6,8.0,Eliminated in round of 32
+18.0,E,Germany,4.0,2.0,1.0,1.0,11.0,5.0,6,7.0,Eliminated in round of 32
+19.0,E,Ivory Coast,4.0,2.0,0.0,2.0,5.0,4.0,1,6.0,Eliminated in round of 32
+20.0,L,Croatia,4.0,2.0,0.0,2.0,6.0,7.0,-1,6.0,Eliminated in round of 32
+21.0,F,Japan,4.0,1.0,2.0,1.0,8.0,5.0,3,5.0,Eliminated in round of 32
+22.0,D,Australia,4.0,1.0,2.0,1.0,3.0,3.0,0,5.0,Eliminated in round of 32
+23.0,K,DR Congo,4.0,1.0,1.0,2.0,5.0,5.0,0,4.0,Eliminated in round of 32
+24.0,L,Ghana,4.0,1.0,1.0,2.0,2.0,3.0,-1,4.0,Eliminated in round of 32
+25.0,E,Ecuador,4.0,1.0,1.0,2.0,2.0,4.0,-2,4.0,Eliminated in round of 32
+25.0,A,South Africa,4.0,1.0,1.0,2.0,2.0,4.0,-2,4.0,Eliminated in round of 32
+27.0,F,Sweden,4.0,1.0,1.0,2.0,7.0,10.0,-3,4.0,Eliminated in round of 32
+28.0,J,Austria,4.0,1.0,1.0,2.0,6.0,9.0,-3,4.0,Eliminated in round of 32
+29.0,B,Bosnia and Herzegovina,4.0,1.0,1.0,2.0,5.0,8.0,-3,4.0,Eliminated in round of 32
+30.0,J,Algeria,4.0,1.0,1.0,2.0,5.0,9.0,-4,4.0,Eliminated in round of 32
+31.0,I,Senegal,4.0,1.0,0.0,3.0,10.0,9.0,1,3.0,Eliminated in round of 32
+32.0,H,Cape Verde,4.0,0.0,3.0,1.0,4.0,5.0,-1,3.0,Eliminated in round of 32
+33.0,G,Iran,3.0,0.0,3.0,0.0,3.0,3.0,0,3.0,Eliminated in group stage
+34.0,A,South Korea,3.0,1.0,0.0,2.0,2.0,3.0,-1,3.0,Eliminated in group stage
+35.0,D,Turkey,3.0,1.0,0.0,2.0,3.0,5.0,-2,3.0,Eliminated in group stage
+36.0,C,Scotland,3.0,1.0,0.0,2.0,1.0,4.0,-3,3.0,Eliminated in group stage
+37.0,H,Uruguay,3.0,0.0,2.0,1.0,3.0,4.0,-1,2.0,Eliminated in group stage
+38.0,H,Saudi Arabia,3.0,0.0,2.0,1.0,1.0,5.0,-4,2.0,Eliminated in group stage
+39.0,A,Czech Republic,3.0,0.0,1.0,2.0,2.0,6.0,-4,1.0,Eliminated in group stage
+40.0,G,New Zealand,3.0,0.0,1.0,2.0,4.0,10.0,-6,1.0,Eliminated in group stage
+41.0,B,Qatar,3.0,0.0,1.0,2.0,2.0,10.0,-8,1.0,Eliminated in group stage
+42.0,E,Curaçao,3.0,0.0,1.0,2.0,1.0,9.0,-8,1.0,Eliminated in group stage
+43.0,L,Panama,3.0,0.0,0.0,3.0,0.0,4.0,-4,0.0,Eliminated in group stage
+44.0,J,Jordan,3.0,0.0,0.0,3.0,3.0,8.0,-5,0.0,Eliminated in group stage
+45.0,C,Haiti,3.0,0.0,0.0,3.0,2.0,8.0,-6,0.0,Eliminated in group stage
+46.0,K,Uzbekistan,3.0,0.0,0.0,3.0,2.0,11.0,-9,0.0,Eliminated in group stage
+47.0,F,Tunisia,3.0,0.0,0.0,3.0,2.0,12.0,-10,0.0,Eliminated in group stage
+48.0,I,Iraq,3.0,0.0,0.0,3.0,1.0,12.0,-11,0.0,Eliminated in group stage
