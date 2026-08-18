@@ -43,8 +43,15 @@ t-test:  high volume (n 24, mean 0.1210) vs low volume (n 24, mean 0.1026)
 ```
 
 ## How to run
+
+**Terminal version** (no web page, prints everything out):
 ```
 pip install -r requirements.txt
+python task3.py
+```
+
+**Web version:**
+```
 python app.py
 ```
 Then open http://127.0.0.1:5000 in your browser.
@@ -94,7 +101,9 @@ service. Any other address is read as an ordinary HTML table with
 
 ## Files
 ```
+task3.py                  - terminal version: downloads + analyses + prints
 app.py                    - Flask app, runs the task + the download endpoint
+TASK3_EXPLAINED.md        - task3.py explained simply, tied to the notes
 CODE_EXPLAINED.md         - plain-English explanation of the whole project
 scraper.py                - downloads the data and writes the extract csv
 stats_helpers.py          - describe / confidence interval / t-test functions

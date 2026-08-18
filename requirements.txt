@@ -2,4 +2,5 @@ flask
 pandas
 numpy
 scipy
+requests
 lxml
