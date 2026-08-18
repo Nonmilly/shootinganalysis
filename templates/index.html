@@ -310,11 +310,7 @@
         <button onclick="scrape()">Load data</button>
       </div>
 
-      <p class="note">Takes about half a minute &mdash; it downloads every match one at a time. There is no backup file,
-        so a failed download gives an error rather than old data.
-        <br>The fifa.com pages build their tables with JavaScript, so there is no table to read off the page itself;
-        a fifa.com address is sent to <b>FIFA's data service</b>, which holds the same numbers. Any other address is
-        read as a normal HTML table, and the table number picks which one. <b>FBRef blocks automated downloads</b> (403).</p>
+      <p class="note">Task blocks automated downloads</b> (403).</p>
       <div id="src" class="src"></div>
       <div id="tableArea"></div>
     </div>
