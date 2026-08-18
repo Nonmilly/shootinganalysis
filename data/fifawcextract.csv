@@ -1,49 +1,49 @@
-Pos,Grp,Team,Pld,W,D,L,GF,GA,GD,Pts,Final result
-1.0,H,Spain,8.0,7.0,1.0,0.0,14.0,1.0,13,22.0,Champion
-2.0,J,Argentina,8.0,7.0,0.0,1.0,19.0,8.0,11,21.0,Runner-up
-3.0,L,England,8.0,6.0,1.0,1.0,20.0,12.0,8,19.0,Third place
-4.0,I,France,8.0,6.0,0.0,2.0,20.0,10.0,10,18.0,Fourth place
-5.0,I,Norway,6.0,4.0,0.0,2.0,13.0,11.0,2,12.0,Eliminated in quarterfinals
-6.0,G,Belgium,6.0,3.0,2.0,1.0,14.0,7.0,7,11.0,Eliminated in quarterfinals
-7.0,C,Morocco,6.0,3.0,2.0,1.0,10.0,6.0,4,11.0,Eliminated in quarterfinals
-7.0,B,Switzerland,6.0,3.0,2.0,1.0,10.0,6.0,4,11.0,Eliminated in quarterfinals
-9.0,A,Mexico (H),5.0,4.0,0.0,1.0,10.0,3.0,7,12.0,Eliminated in round of 16
-10.0,K,Colombia,5.0,3.0,2.0,0.0,5.0,1.0,4,11.0,Eliminated in round of 16
-11.0,C,Brazil,5.0,3.0,1.0,1.0,10.0,4.0,6,10.0,Eliminated in round of 16
-12.0,D,United States (H),5.0,3.0,0.0,2.0,11.0,8.0,3,9.0,Eliminated in round of 16
-13.0,K,Portugal,5.0,2.0,2.0,1.0,8.0,3.0,5,8.0,Eliminated in round of 16
-14.0,B,Canada (H),5.0,2.0,1.0,2.0,9.0,6.0,3,7.0,Eliminated in round of 16
-15.0,G,Egypt,5.0,1.0,3.0,1.0,8.0,7.0,1,6.0,Eliminated in round of 16
-16.0,D,Paraguay,5.0,1.0,2.0,2.0,3.0,6.0,-3,5.0,Eliminated in round of 16
-17.0,F,Netherlands,4.0,2.0,2.0,0.0,11.0,5.0,6,8.0,Eliminated in round of 32
-18.0,E,Germany,4.0,2.0,1.0,1.0,11.0,5.0,6,7.0,Eliminated in round of 32
-19.0,E,Ivory Coast,4.0,2.0,0.0,2.0,5.0,4.0,1,6.0,Eliminated in round of 32
-20.0,L,Croatia,4.0,2.0,0.0,2.0,6.0,7.0,-1,6.0,Eliminated in round of 32
-21.0,F,Japan,4.0,1.0,2.0,1.0,8.0,5.0,3,5.0,Eliminated in round of 32
-22.0,D,Australia,4.0,1.0,2.0,1.0,3.0,3.0,0,5.0,Eliminated in round of 32
-23.0,K,DR Congo,4.0,1.0,1.0,2.0,5.0,5.0,0,4.0,Eliminated in round of 32
-24.0,L,Ghana,4.0,1.0,1.0,2.0,2.0,3.0,-1,4.0,Eliminated in round of 32
-25.0,E,Ecuador,4.0,1.0,1.0,2.0,2.0,4.0,-2,4.0,Eliminated in round of 32
-25.0,A,South Africa,4.0,1.0,1.0,2.0,2.0,4.0,-2,4.0,Eliminated in round of 32
-27.0,F,Sweden,4.0,1.0,1.0,2.0,7.0,10.0,-3,4.0,Eliminated in round of 32
-28.0,J,Austria,4.0,1.0,1.0,2.0,6.0,9.0,-3,4.0,Eliminated in round of 32
-29.0,B,Bosnia and Herzegovina,4.0,1.0,1.0,2.0,5.0,8.0,-3,4.0,Eliminated in round of 32
-30.0,J,Algeria,4.0,1.0,1.0,2.0,5.0,9.0,-4,4.0,Eliminated in round of 32
-31.0,I,Senegal,4.0,1.0,0.0,3.0,10.0,9.0,1,3.0,Eliminated in round of 32
-32.0,H,Cape Verde,4.0,0.0,3.0,1.0,4.0,5.0,-1,3.0,Eliminated in round of 32
-33.0,G,Iran,3.0,0.0,3.0,0.0,3.0,3.0,0,3.0,Eliminated in group stage
-34.0,A,South Korea,3.0,1.0,0.0,2.0,2.0,3.0,-1,3.0,Eliminated in group stage
-35.0,D,Turkey,3.0,1.0,0.0,2.0,3.0,5.0,-2,3.0,Eliminated in group stage
-36.0,C,Scotland,3.0,1.0,0.0,2.0,1.0,4.0,-3,3.0,Eliminated in group stage
-37.0,H,Uruguay,3.0,0.0,2.0,1.0,3.0,4.0,-1,2.0,Eliminated in group stage
-38.0,H,Saudi Arabia,3.0,0.0,2.0,1.0,1.0,5.0,-4,2.0,Eliminated in group stage
-39.0,A,Czech Republic,3.0,0.0,1.0,2.0,2.0,6.0,-4,1.0,Eliminated in group stage
-40.0,G,New Zealand,3.0,0.0,1.0,2.0,4.0,10.0,-6,1.0,Eliminated in group stage
-41.0,B,Qatar,3.0,0.0,1.0,2.0,2.0,10.0,-8,1.0,Eliminated in group stage
-42.0,E,Curaçao,3.0,0.0,1.0,2.0,1.0,9.0,-8,1.0,Eliminated in group stage
-43.0,L,Panama,3.0,0.0,0.0,3.0,0.0,4.0,-4,0.0,Eliminated in group stage
-44.0,J,Jordan,3.0,0.0,0.0,3.0,3.0,8.0,-5,0.0,Eliminated in group stage
-45.0,C,Haiti,3.0,0.0,0.0,3.0,2.0,8.0,-6,0.0,Eliminated in group stage
-46.0,K,Uzbekistan,3.0,0.0,0.0,3.0,2.0,11.0,-9,0.0,Eliminated in group stage
-47.0,F,Tunisia,3.0,0.0,0.0,3.0,2.0,12.0,-10,0.0,Eliminated in group stage
-48.0,I,Iraq,3.0,0.0,0.0,3.0,1.0,12.0,-11,0.0,Eliminated in group stage
+Team,Matches,Goals,GoalsAgainst,Attempts,Assists,Corners,Offsides,Fouls,YellowCards,Saves
+Mexico,5,10,3,70,7,19,5,55,4,7
+South Africa,4,2,4,39,1,11,8,33,5,13
+Korea Republic,3,2,3,32,2,12,8,21,4,11
+Czechia,3,2,6,34,2,15,5,36,1,8
+Canada,5,9,6,81,3,50,7,63,11,5
+Bosnia and Herzegovina,4,5,8,37,3,15,2,53,8,9
+USA,5,11,8,59,4,26,11,51,7,7
+Paraguay,5,3,6,35,3,10,5,57,13,21
+Qatar,3,2,10,17,1,9,4,31,4,10
+Switzerland,6,10,6,74,6,28,13,82,7,15
+Brazil,5,10,4,73,8,27,11,43,8,12
+Morocco,6,10,6,69,9,30,9,68,7,20
+Haiti,3,2,8,31,1,9,7,50,7,12
+Scotland,3,1,4,29,0,12,2,37,5,9
+Australia,4,3,3,42,1,16,1,43,5,8
+Türkiye,3,3,5,70,2,22,7,29,3,6
+Germany,4,11,5,74,10,34,4,48,5,9
+Curaçao,3,1,9,29,0,5,5,26,7,15
+Netherlands,4,11,5,46,10,18,8,41,3,14
+Japan,4,8,5,33,7,13,4,51,4,13
+Côte d'Ivoire,4,5,4,45,4,26,4,25,4,11
+Ecuador,4,2,4,53,2,25,2,42,8,10
+Sweden,4,7,10,48,6,18,9,38,5,14
+Tunisia,3,2,12,18,2,9,9,27,1,3
+Spain,8,14,1,140,10,54,21,95,6,8
+Cabo Verde,4,4,5,49,2,17,7,23,5,12
+Belgium,6,14,7,112,10,24,8,71,7,17
+Egypt,5,8,7,67,8,26,4,50,15,20
+Saudi Arabia,3,1,5,17,0,7,3,24,6,11
+Uruguay,3,3,4,49,1,26,14,26,5,3
+IR Iran,3,3,3,37,1,8,9,29,6,11
+New Zealand,3,4,10,31,3,10,4,28,4,11
+France,8,20,10,139,18,51,14,79,6,12
+Senegal,4,10,9,69,9,22,10,33,3,13
+Iraq,3,1,12,21,1,7,1,23,4,12
+Norway,6,13,11,65,10,29,5,56,3,22
+Argentina,8,19,8,115,12,41,22,103,15,22
+Algeria,4,5,9,44,3,14,4,26,3,15
+Austria,4,6,9,32,4,10,11,44,5,11
+Jordan,3,3,8,24,3,6,3,27,4,11
+Portugal,5,8,3,62,4,22,10,37,7,16
+Congo DR,4,5,5,41,3,13,9,38,6,15
+England,8,20,12,118,14,40,15,77,8,29
+Croatia,4,6,7,37,5,12,8,41,4,11
+Ghana,4,2,3,24,1,8,8,51,6,11
+Panama,3,0,4,32,0,12,6,41,5,10
+Uzbekistan,3,2,11,18,1,9,3,41,4,7
+Colombia,5,5,1,94,5,24,19,63,9,6

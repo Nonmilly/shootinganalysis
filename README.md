@@ -1,17 +1,19 @@
-# FIFA World Cup 2026 — Scoring Efficiency (Assessment 2)
+# FIFA World Cup 2026 — Shooting Efficiency (Assessment 2)
 
 My analytic task for the group project. A Flask app that **downloads** real
-2026 World Cup team data from the web, saves it to `data/fifawcextract.csv`,
-and analyses **scoring efficiency**.
+2026 World Cup data from **FIFA's official data service**, saves it to
+`data/fifawcextract.csv`, and analyses **shooting efficiency**.
 
-Task 3 — Scoring efficiency — Mildred (`tasks/task3_shooting.py`)
+Task 3 — Shooting efficiency — Mildred (`tasks/task3_shooting.py`)
 
 ## The analytic question
-How many goals per match does a team score at the 2026 World Cup, and do teams
-that reached the knockout stage score at a different rate to teams that were
-eliminated in the group stage?
+How efficiently do teams convert their attempts at goal into goals at the 2026
+World Cup, and do high-volume shooting teams convert at a different rate from
+low-volume shooting teams?
 
-**Focal point:** goals scored per match (`GF / Pld`).
+**Focal point:** attempt-at-goal conversion rate (`Goals / Attempts`) — FIFA's
+own efficiency metric. This is about *efficiency*, not about how many goals a
+team scored, so it stays distinct from a goals-count task.
 
 ## What the task covers
 1. Analytic question formulation
@@ -28,16 +30,16 @@ conclusion are all produced by the code and shown on the page.
 
 ## Hypotheses
 ```
-H0: mu_knockout  =  mu_group    (both groups score at the same rate)
-Ha: mu_knockout !=  mu_group    (two-sided)   alpha = 0.05
+H0: mu_high  =  mu_low    (both groups convert at the same rate)
+Ha: mu_high !=  mu_low    (two-sided)   alpha = 0.05
 ```
 
 ## Result
 ```
 Sample:  n = 30 of 48 teams, simple random sampling
-CI:      mean 1.3053, z* = 1.960, SE 0.13582, MoE 0.2662 -> [1.0391, 1.5715]
-t-test:  knockout (n 32, mean 1.6487) vs group stage (n 16, mean 0.6667)
-         t(15) = 6.70, p < .0001  ->  reject H0
+CI:      mean 0.1113, z* = 1.960, SE 0.00998 -> [0.0918, 0.1309]
+t-test:  high volume (n 24, mean 0.1210) vs low volume (n 24, mean 0.1026)
+         t(23) = 1.20, p = .237  ->  do not reject H0
 ```
 
 ## How to run
@@ -54,29 +56,41 @@ You need an internet connection. There is no backup CSV — if the download
 fails, the task reports that instead of analysing stale data.
 
 ## Where the data comes from
-`scraper.py` downloads the final ranking table of all 48 teams from
+FIFA's **official data service** — the same one that fills in the statistics
+pages on fifa.com. Those pages build their tables with JavaScript, so there is
+no HTML table to read off the page itself; the data behind them is public:
 
 ```
-https://en.wikipedia.org/wiki/2026_FIFA_World_Cup   (table 68)
+api.fifa.com/api/v3/calendar/matches?idCompetition=17&idSeason=285023
+    -> the 104 matches and their scores
+api.fifa.com/api/v3/timelines/17/285023/{stage}/{match}
+    -> every event in a match: "Attempt at Goal", "Corner", "Foul", ...
 ```
 
-and gives these columns: `Pos, Grp, Team, Pld, W, D, L, GF, GA, GD, Pts,
-Final result`.
+`competition 17` is the FIFA World Cup and `season 285023` is the 2026
+tournament (11 Jun – 19 Jul 2026).
+
+Counting each team's events across all 104 matches gives one row per team:
+
+```
+Team, Matches, Goals, GoalsAgainst, Attempts, Assists,
+Corners, Offsides, Fouls, YellowCards, Saves
+```
 
 Every run does the same three things:
 
-1. **download** the table with `pd.read_html()`
+1. **download** the 104 matches and their timelines (about 30 seconds)
 2. **delete** any existing `data/fifawcextract.csv`
-3. **save** the fresh data to that file, then **load it back** for the analysis
+3. **save** the fresh data there, then **load it back** for the analysis
 
 So the extract file always holds exactly the data the analysis ran on — never
 a mix of old and new.
 
-The scraper is site-independent: point `SOURCE` in `tasks/task3_shooting.py`
-at any page with an HTML table and set `table_index` to pick the table.
+**In the app**, a fifa.com address in the URL box (or an empty box) uses this
+service. Any other address is read as an ordinary HTML table with
+`pd.read_html()`, and the table number picks which table.
 
-**Note:** FBRef blocks automated requests (HTTP 403), so it cannot be used as
-a source. See the note on shooting data below.
+**Note:** FBRef blocks automated requests (HTTP 403), so it cannot be used.
 
 ## Files
 ```
@@ -89,16 +103,12 @@ templates/index.html      - the web page
 data/fifawcextract.csv    - the downloaded data (rewritten every run)
 ```
 
-## Note on shots and xG
-The original plan was shot conversion — goals per shot on target — and
-comparing teams against their expected goals (xG). Neither shots on target nor
-xG is published in any table that can be downloaded: FBRef has them but blocks
-automated requests, and ESPN and Understat build their tables with JavaScript
-so there is no table in the page to read.
+## Note on the data
+Both `Goals` and `Attempts` come from FIFA's own records: goals from each
+match's official score, attempts from the "Attempt at Goal" events in the
+match timeline. `Goals / Attempts` is FIFA's published *Attempt at Goal
+Conversion Rate*.
 
-The real data that *can* be downloaded gives goals, matches played and goals
-against, so the task measures **goals per match** instead. It is still the
-attacking/scoring focal point, and all six required skills are unchanged.
-
-To go back to shot conversion you would need a source for `SoT` and `xG` —
-for example an FBRef page saved to CSV by hand and read with `pd.read_csv()`.
+FIFA's data service does not expose expected goals (xG) or a separate
+on-target count, so the conversion rate here is goals per *attempt*, not goals
+per shot *on target*.

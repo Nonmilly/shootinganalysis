@@ -1,6 +1,9 @@
 # task3_shooting.py
 # Author: Mildred
-# Focal point: SCORING EFFICIENCY - how many goals a team scores per match
+# Focal point: SHOOTING EFFICIENCY - how well a team turns its attempts at
+# goal into actual goals. This is FIFA's own "Attempt at Goal Conversion
+# Rate" metric, and it is about efficiency, not about how many goals a
+# team scored.
 #
 # This is my analytic task. It covers the six required skills, and it
 # follows the 4-Step Process for a hypothesis test from the unit notes:
@@ -22,11 +25,11 @@ from stats_helpers import (
     two_sample_ttest,
 )
 
-# Where the data is downloaded from. The scraper saves it to the extract
-# csv and then loads it back, so the csv always matches this run.
+# Where the data comes from. With no "url" the scraper downloads from
+# FIFA's own data service, saves it to the extract csv, and loads it back.
 SOURCE = {
-    "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup",
-    "table_index": 68,          # the final ranking table of all 48 teams
+    "url": None,
+    "table_index": 0,
     "extract_csv": "data/fifawcextract.csv",
 }
 
@@ -39,28 +42,27 @@ def run():
     # ===============================================================
     # SKILL 1 - ANALYTIC QUESTION        (STEP 1: STATE)
     # ===============================================================
-    # How many goals per match does a team score at the 2026 World Cup,
-    # and do teams that reached the knockout stage score at a different
-    # rate to teams that were eliminated in the group stage?
-    question = ("How many goals per match does a team score at the 2026 "
-                "World Cup, and do teams that reached the knockout stage "
-                "score at a different rate from teams eliminated in the "
-                "group stage?")
+    # How efficiently does a team convert its attempts at goal into goals
+    # at the 2026 World Cup, and do teams that attempt a lot of shots
+    # convert at a different rate to teams that attempt few?
+    question = ("How efficiently do teams convert their attempts at goal "
+                "into goals at the 2026 World Cup, and do high-volume "
+                "shooting teams convert at a different rate from "
+                "low-volume shooting teams?")
 
     # ===============================================================
     # STEP 2: PLAN - the parameters and the two competing hypotheses
     # ===============================================================
-    # The parameter is mu, the mean goals per match of a group of teams.
+    # The parameter is mu, the mean conversion rate of a group of teams.
     # I am not claiming which group is higher, only asking whether they
     # differ, so this is a two-sided test.
     #
-    #   H0: mu_knockout  =  mu_group
-    #   Ha: mu_knockout !=  mu_group
+    #   H0: mu_high  =  mu_low
+    #   Ha: mu_high !=  mu_low
     hypotheses = {
-        "H0": "mu_knockout = mu_group  (teams that reached the knockout "
-              "stage score at the same rate as teams that went out in the "
-              "group stage)",
-        "Ha": "mu_knockout != mu_group  (the two groups score at different "
+        "H0": "mu_high = mu_low  (teams that attempt many shots convert at "
+              "the same rate as teams that attempt few)",
+        "Ha": "mu_high != mu_low  (the two groups convert at different "
               "rates)",
         "tail": "two-sided",
         "test": "two-sample (independent) t-test",
@@ -70,24 +72,23 @@ def run():
     # ===============================================================
     # SKILL 2 - DATA WRANGLING           (STEP 3: SOLVE)
     # ===============================================================
-    # keep only the columns I need: the team, matches played, goals for
-    # and goals against
-    df = df[["Team", "Pld", "GF", "GA"]].copy()
+    # keep only the columns I need for shooting
+    df = df[["Team", "Matches", "Goals", "Attempts"]].copy()
 
     # make sure the numbers are numbers and not text
-    for c in ["Pld", "GF", "GA"]:
+    for c in ["Matches", "Goals", "Attempts"]:
         df[c] = df[c].astype(float)
 
     # Missing values: I used LISTWISE (CASE) DELETION from the notes - if a
     # row is missing any value I need, the whole row goes. I did not use
-    # mean substitution because inventing a goals total for a real team
+    # mean substitution because inventing a shot count for a real team
     # would pull every result towards the average and hide the real spread.
     rows_before = len(df)
-    df = df.dropna(subset=["Pld", "GF", "GA"])
+    df = df.dropna(subset=["Matches", "Goals", "Attempts"])
 
-    # drop any team with 0 matches played - goals per match divides by
-    # Pld, and you cannot divide by zero
-    df = df[df["Pld"] > 0]
+    # drop any team with no attempts at all - conversion divides by
+    # Attempts, and you cannot divide by zero
+    df = df[df["Attempts"] > 0]
     rows_dropped = rows_before - len(df)
 
     # ===============================================================
@@ -96,7 +97,7 @@ def run():
     # FEATURE CONSTRUCTION (Week 5): I build a new variable out of two
     # existing ones, the same way the notes build BMI out of weight and
     # height. This is my response variable.
-    df["GoalsPerMatch"] = df["GF"] / df["Pld"]
+    df["Conversion"] = df["Goals"] / df["Attempts"]
 
     # POPULATION = all the teams in the tournament.
     # SAMPLE     = 30 of them, chosen by SIMPLE RANDOM SAMPLING.
@@ -108,8 +109,8 @@ def run():
     # random_state=3 keeps the same 30 teams on every run so my results
     # don't change between testing and submitting.
     population_size = len(df)
-    sample = df["GoalsPerMatch"].sample(n=min(30, population_size),
-                                        random_state=3)
+    sample = df["Conversion"].sample(n=min(30, population_size),
+                                     random_state=3)
 
     # ===============================================================
     # STEP 3: SOLVE - check the conditions for inference first
@@ -129,28 +130,29 @@ def run():
     # ===============================================================
     # SKILL 5 - CONFIDENCE INTERVAL      (STEP 3: SOLVE)
     # ===============================================================
-    # 95% confidence interval estimating the mean goals per match of the
+    # 95% confidence interval estimating the mean conversion rate of the
     # whole population, using CI = x-bar +/- z* . (s / sqrt(n))
     ci = confidence_interval(sample, 0.95)
 
     # ===============================================================
     # SKILL 6 - TWO-SAMPLE t-TEST        (STEP 3: SOLVE)
     # ===============================================================
-    # Split the teams into the two groups being compared. The group stage
-    # is 3 matches, so any team with more than 3 matches played reached
-    # the knockout stage.
-    # (This is DISCRETISATION - turning a continuous variable, matches
-    # played, into two categories.)
-    knockout = df[df["Pld"] > 3]["GoalsPerMatch"]
-    group_only = df[df["Pld"] <= 3]["GoalsPerMatch"]
+    # Split the teams by how many attempts they had. Teams that played
+    # more matches naturally get more attempts, so I compare attempts PER
+    # MATCH to keep it fair, and split on the median.
+    # (This is DISCRETISATION - turning a continuous variable, attempts
+    # per match, into two categories.)
+    df["AttemptsPerMatch"] = df["Attempts"] / df["Matches"]
+    median_attempts = df["AttemptsPerMatch"].median()
+    high = df[df["AttemptsPerMatch"] >= median_attempts]["Conversion"]
+    low = df[df["AttemptsPerMatch"] < median_attempts]["Conversion"]
 
-    ttest = two_sample_ttest(knockout, group_only, alpha=hypotheses["alpha"])
+    ttest = two_sample_ttest(high, low, alpha=hypotheses["alpha"])
 
     # ===============================================================
     # STEP 4: CONCLUDE - answer the question from Step 1
     # ===============================================================
     p_text = ttest["p_value_text"]
-    # how to word "how often this would happen by chance"
     if ttest["p_value"] < 0.0001:
         chance = "fewer than 1 time in 10,000"
     else:
@@ -160,10 +162,10 @@ def run():
         conclusion = (
             "The p-value is {p}, which is at or below 0.05. If H0 were "
             "true, a difference this big between the two group means would "
-            "happen by chance {chance}, which makes it very unusual. So we "
+            "happen by chance {chance}, which makes it unusual. So we "
             "REJECT the null hypothesis: there is enough evidence that "
-            "teams reaching the knockout stage score at a different rate "
-            "from teams eliminated in the group stage."
+            "high-volume shooting teams convert at a different rate from "
+            "low-volume shooting teams."
         ).format(p=p_text, chance=chance)
     else:
         conclusion = (
@@ -171,25 +173,27 @@ def run():
             "difference this big between the two group means could still "
             "happen by chance {chance}, so it is not unusual. So we DO NOT "
             "REJECT the null hypothesis: there is not enough evidence that "
-            "teams reaching the knockout stage score at a different rate "
-            "from teams eliminated in the group stage."
+            "high-volume shooting teams convert at a different rate from "
+            "low-volume shooting teams."
         ).format(p=p_text, chance=chance)
 
     # answer to the first half of the question, from the confidence interval
     estimate = (
-        "Teams score on average {mean} goals per match. We are {conf:.0f}% "
-        "confident the true mean for all teams is between {lo} and {hi}."
-    ).format(mean=ci["mean"], conf=ci["conf_level"] * 100,
-             lo=ci["lower"], hi=ci["upper"])
+        "Teams convert on average {mean} of their attempts at goal (about "
+        "{pc:.1f}%). We are {conf:.0f}% confident the true mean for all "
+        "teams is between {lo} and {hi}."
+    ).format(mean=ci["mean"], pc=ci["mean"] * 100,
+             conf=ci["conf_level"] * 100, lo=ci["lower"], hi=ci["upper"])
 
     return {
-        "title": "Task 3 - Scoring efficiency (Mildred)",
+        "title": "Task 3 - Shooting efficiency (Mildred)",
         "question": question,
-        "variable": "GoalsPerMatch = GF / Pld (goals scored per match)",
+        "variable": "Conversion = Goals / Attempts at Goal",
         "measurement_level": "ratio, continuous",
-        "data_source": SOURCE["url"],
+        "data_source": "FIFA official data service (api.fifa.com), "
+                       "competition 17, season 285023",
         "wrangling": {
-            "columns_kept": ["Team", "Pld", "GF", "GA"],
+            "columns_kept": ["Team", "Matches", "Goals", "Attempts"],
             "missing_data_method": "listwise (case) deletion",
             "rows_dropped": int(rows_dropped),
         },
@@ -204,8 +208,10 @@ def run():
         "descriptive": desc,
         "confidence_interval": ci,
         "ttest": {
-            "group_a": "Reached knockout stage",
-            "group_b": "Eliminated in group stage",
+            "group_a": "High-volume shooters (>= %.1f attempts/match)"
+                       % median_attempts,
+            "group_b": "Low-volume shooters (< %.1f attempts/match)"
+                       % median_attempts,
             **ttest,
         },
         "estimate": estimate,
